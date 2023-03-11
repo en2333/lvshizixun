@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Netty-Websocket</title>
+  <script type="text/javascript">
+    let socket;
+    socket = new WebSocket("ws://localhost:8080");
+    socket.onmessage = function(event){
+      let textarea = document.getElementById('responseText');
+      textarea.value += event.data+"\r\n";
+    };
+    socket.onclose = function(event){
+      let textarea = document.getElementById('responseText');
+      textarea.value =  event+"链接断开 \r\n";
+    };
+    socket.onopen = function(event){
+
+    };
+    function login(){
+      console.log(window.WebSocket)
+      if(window.WebSocket){
+          socket.send(JSON.stringify({
+            "code":"10001",
+            "id":document.getElementById('name').value
+          }))
+      } else {
+        alert("您的浏览器不支持WebSocket协议！");
+      }
+    }
+    function logout(){
+      socket.send(JSON.stringify({
+        "code":"10003",
+        "id":document.getElementById('name').value
+      }))
+    }
+
+    function send(){
+      let target = document.getElementById('target').value;
+
+      if(!window.WebSocket){return;}
+      if(socket.readyState === WebSocket.OPEN) {
+        let message = document.getElementById('message').value;
+        // socket.send(message);
+        socket.send(JSON.stringify({
+          "code":"10002",
+          "id":document.getElementById('name').value,
+          "target": target,
+          "type":1,
+          "content": message
+        }))
+      } else {
+        alert("WebSocket 连接没有建立成功！");
+      }
+    }
+
+  </script>
+</head>
+<body>
+<form onSubmit="return false;">
+  <label>nic:</label><input id="name" placeholder="请输入昵称"/>
+   <input type="button" value="上线" onClick="login()" />
+  <input type="button" value="下线" onClick="logout()" /><br />
+  <label>  文 本：</label><input type="text" id="message" name="message" placeholder="这里输入消息" /> <br />
+  <label>接收人:</label><input id="target" placeholder="请输入接收人"/>
+
+  <br /> <input type="button" value="发送ws消息"
+                onClick="send()" />
+  <hr color="black" />
+  <h3>服务端返回的应答消息</h3>
+  <textarea id="responseText" style="width: 1024px;height: 300px;"></textarea>
+</form>
+</body>
+</html>

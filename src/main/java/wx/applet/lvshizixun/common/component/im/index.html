@@ -5,7 +5,7 @@
   <title>Netty-Websocket</title>
   <script type="text/javascript">
     let socket;
-    socket = new WebSocket("ws://localhost:8080");
+    socket = new WebSocket("ws://localhost:9091");
     socket.onmessage = function(event){
       let textarea = document.getElementById('responseText');
       textarea.value += event.data+"\r\n";

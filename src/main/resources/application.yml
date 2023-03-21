@@ -1,1 +1,22 @@
+server:
+  port: 9090
 
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/lawyconsult?serverTimezone=GMT%2b8
+    username: root
+    password: 1
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+    servlet:
+      multipart:
+        max-file-size: 1000MB
+        max-request-size: 1000MB
+
+files:
+  internetPath:   #当前网络环境
+    path: http://localhost:9090
+  imageUpload:
+    path: /Users/qwertyuiop/Documents/lvshizixun/image/
